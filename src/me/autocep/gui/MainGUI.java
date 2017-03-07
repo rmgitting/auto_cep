@@ -8,9 +8,10 @@ package me.autocep.gui;
 import java.awt.Color;
 import java.io.File;
 import java.util.List;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JProgressBar;
 import javax.swing.JTextPane;
-import javax.swing.text.DefaultStyledDocument;
 import me.autocep.esper.DispatchEvents;
 import me.autocep.esper.Esper;
 import me.autocep.esper.Evaluation;
@@ -54,6 +55,8 @@ public class MainGUI extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         selectTestBtn = new javax.swing.JButton();
+        abnormalCheckBox = new javax.swing.JCheckBox();
+        streamTestBtn = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         clearFilePane = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -62,6 +65,7 @@ public class MainGUI extends javax.swing.JFrame {
         clearGlobalPane = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         globalPane = new javax.swing.JTextPane();
+        filesProgressBar = new javax.swing.JProgressBar();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         rulePane = new javax.swing.JTextPane();
@@ -115,6 +119,11 @@ public class MainGUI extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 102, 0), null), "Select Dataset"));
 
         datasetCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Wafer", "ECG", "Robot" }));
+        datasetCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datasetComboActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -212,7 +221,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Testing"));
 
-        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 102, 0), null), "Select Test Files"));
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 102, 0), null), "Test Files"));
 
         selectTestBtn.setText("Select");
         selectTestBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -221,21 +230,43 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
+        abnormalCheckBox.setText("Test for abnormality");
+        abnormalCheckBox.setToolTipText("Show statistics on detecting abnormality");
+
+        streamTestBtn.setText("Stream");
+        streamTestBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                streamTestBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(selectTestBtn)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addComponent(abnormalCheckBox)
+                .addGap(0, 27, Short.MAX_VALUE))
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(streamTestBtn))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(selectTestBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(selectTestBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(abnormalCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(streamTestBtn)
+                .addContainerGap())
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Info About Current File"));
@@ -269,7 +300,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(clearFilePane)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -313,8 +344,10 @@ public class MainGUI extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(filesProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
@@ -323,14 +356,15 @@ public class MainGUI extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(filesProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -370,7 +404,7 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel1.setText("Developped By:");
 
         jTextPane1.setEditable(false);
-        jTextPane1.setText("This Java software called autoCEP, combined with the python \nproject USE & SEE constitute a research effort to form a \nrobust approach to learn predictive patterns from multivariate\n time series, and then automatically transform these patterns\n into complex CEP rules.\nFirst this initiative made it possible to automatically learn CEP\nrules, which was not the case as in the CEP world humans \nare always in charge of this specification.\nSecond, it made it simple to use CEP in predictive contexts. \nThis task was very complex due to the manual specificaiton\nof rules.\nThird, it paves the way for non-experts in the CEP world to\n make advantage of the CEP technology.");
+        jTextPane1.setText("This Java software called autoCEP, combined with the python \nproject USE & SEE constitute a research effort to form a \nrobust approach to learn predictive patterns from multivariate\n time series, and then automatically transform these patterns\n into complex CEP rules.\nFirst this initiative made it possible to automatically learn CEP\nrules, which was not the case as in the CEP world humans \nare always in charge of this specification.\nSecond, it made it simple to use CEP in predictive contexts. \nThis task was very complex due to the manual specificaiton\nof rules.\nThird, it paves the way for non-experts in the CEP world to\n take advantage of the CEP technology.");
         jScrollPane5.setViewportView(jTextPane1);
 
         jLabel2.setFont(new java.awt.Font("Bree Serif", 2, 18)); // NOI18N
@@ -449,7 +483,7 @@ public class MainGUI extends javax.swing.JFrame {
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -501,20 +535,8 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void selectTestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTestBtnActionPerformed
         // TODO add your handling code here:
-        File[] testFiles = Global.selectFiles(this, "CSV files (*.csv)", "csv");
-        if (testFiles == null) {
-            Global.writeLog(infoPane, Color.red, "You need to select the log files first");
-            return;
-        }
-        if (getEsper() == null) {
-            Global.writeLog(infoPane, Color.red, "You need to transform the rules into CEP Rules first");
-            return;
-        }
+        testFiles = Global.selectFiles(this, "CSV files (*.csv)", "csv");
         
-        Evaluation.reset();
-        CleanUp.erasePane(filePane);
-        CleanUp.erasePane(globalPane);
-        new DispatchEvents(testFiles, esper).start();
     }//GEN-LAST:event_selectTestBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -546,6 +568,28 @@ public class MainGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         CleanUp.erasePane(globalPane);
     }//GEN-LAST:event_clearGlobalPaneActionPerformed
+
+    private void datasetComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datasetComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_datasetComboActionPerformed
+
+    private void streamTestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_streamTestBtnActionPerformed
+        if (testFiles == null) {
+            Global.writeLog(infoPane, Color.red, "You need to select the log files first");
+            return;
+        }
+        if (getEsper() == null) {
+            Global.writeLog(infoPane, Color.red, "You need to transform the rules into CEP Rules first");
+            return;
+        }
+        
+        filesProgressBar.setMaximum(testFiles.length);
+        filesProgressBar.setValue(0);
+        Evaluation.reset();
+        CleanUp.erasePane(filePane);
+        CleanUp.erasePane(globalPane);
+        new DispatchEvents(testFiles, esper).start();
+    }//GEN-LAST:event_streamTestBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -648,17 +692,35 @@ public class MainGUI extends javax.swing.JFrame {
     public void setGlobalPane(JTextPane globalPane) {
         this.globalPane = globalPane;
     }
+
+    public JProgressBar getFilesProgressBar() {
+        return filesProgressBar;
+    }
+
+    public void setFilesProgressBar(JProgressBar filesProgressBar) {
+        this.filesProgressBar = filesProgressBar;
+    }
+
+    public JCheckBox getAbnormalCheckBox() {
+        return abnormalCheckBox;
+    }
+
+    public void setAbnormalCheckBox(JCheckBox abnormalCheckBox) {
+        this.abnormalCheckBox = abnormalCheckBox;
+    }
     
     
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox abnormalCheckBox;
     private javax.swing.JButton clearFilePane;
     private javax.swing.JButton clearGlobalPane;
     private javax.swing.JButton clearInfoPane;
     private javax.swing.JButton clearRulePane;
     private javax.swing.JComboBox datasetCombo;
     private javax.swing.JTextPane filePane;
+    private javax.swing.JProgressBar filesProgressBar;
     private javax.swing.JTextPane globalPane;
     private javax.swing.JTextPane infoPane;
     private javax.swing.JButton jButton1;
@@ -688,9 +750,11 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem newRulesMenuItem;
     private javax.swing.JTextPane rulePane;
     private javax.swing.JButton selectTestBtn;
+    private javax.swing.JButton streamTestBtn;
     private javax.swing.JButton transformBtn;
     // End of variables declaration//GEN-END:variables
     private List<TimeSequence> rules;
     private Esper esper;
     private boolean engineKilled = true;
+    private File[] testFiles;
 }

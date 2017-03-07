@@ -4,7 +4,6 @@ import me.autocep.models.TimeSequence;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;

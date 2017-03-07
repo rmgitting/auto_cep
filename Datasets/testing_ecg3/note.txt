@@ -1,0 +1,2 @@
+euc: 8 hours
+mass: 4 hours

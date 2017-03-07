@@ -19,7 +19,7 @@ public class RuleQueries {
 
     public static String queryCreateWindow(EPServiceProvider service, int index) {
         String query = "CREATE WINDOW rule" + index + ".win:keepall() "
-                + "(time int, t int, dim String)";
+                + "(time int, t int, dim String, dis double)";
         service.getEPAdministrator().createEPL(query);
         return query;
 
@@ -29,7 +29,7 @@ public class RuleQueries {
         String query = "ON DeleteEvent(d=true) DELETE FROM rule" + index;
         EPStatement statement = service.getEPAdministrator().createEPL(query);
         statement.addListener((EventBean[] ebs, EventBean[] ebs1) -> {
-            System.out.println("Emptying the window rule" + index);
+//            System.out.println("Emptying the window rule" + index);
         });
         return query;
 
@@ -65,7 +65,7 @@ public class RuleQueries {
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         String query = "SELECT ";
         for (int i = 0; i < rule.getSequence().size(); i++) {
-            query += alphabet[i]+".time, " + alphabet[i] + ".t, " + alphabet[i] + ".dim ";
+            query += alphabet[i] + ".time, " + alphabet[i] + ".t, " + alphabet[i] + ".dim, " + alphabet[i] + ".dis ";
             if (i != rule.getSequence().size() - 1) {
                 query += ", ";
             }
@@ -81,21 +81,43 @@ public class RuleQueries {
             }
         }
         query += "]";
-        System.out.println("Query:" + query);
+//        System.out.println("Query:" + query);
         EPStatement statement = esper.getService().getEPAdministrator().createEPL(query);
         statement.addListener((EventBean[] ebs, EventBean[] ebs1) -> {
-            System.out.println("Pattern Found");
-            String ruleClass = rule.getClass_sequence();
-            if(esper.getPredictedClass() == null){
-                esper.setPredictedClass(ruleClass);
-                int i = rule.getSequence().size() - 1;
-                esper.setAvgLength((int)ebs[0].get(alphabet[i]+".time"));
+//            System.out.println("Pattern Found");
+            int i = rule.getSequence().size() - 1;
+            double dis = 0.0;
+            for(int j = 0; j <=i ; j++){
+                dis += (double) ebs[0].get(alphabet[j] + ".dis");
             }
-            else{
-                if(!esper.getPredictedClass().equalsIgnoreCase(esper.getTrueClass()) && ruleClass.equalsIgnoreCase(esper.getTrueClass())){
+            int endTime = (int) ebs[0].get(alphabet[i] + ".time");
+//            System.out.println("endTime:"+endTime);
+            String ruleClass = rule.getClass_sequence();
+            
+            if(esper.getMain().getAbnormalCheckBox().isSelected()){
+                if(!esper.isAbnormalDetected() && ruleClass.equalsIgnoreCase("abnormal")){
+                    esper.setAbnormalDetected(true);
+                    esper.setAbnormalAvgLength(endTime);
+                }
+            }
+            
+            if(dis < esper.getClosestDistance()){
+                esper.setClosestDistance(dis);
+                esper.setClosestAvgLength(endTime);
+                esper.setClosestPredictedClass(ruleClass);
+            }
+            esper.getAllPredictedClasses().add(ruleClass + "@" + endTime);
+            if (esper.getFirstPredictedClass() == null) {
+                esper.setFirstPredictedClass(ruleClass);
+                esper.setFirstAvgLength(endTime);
+            }
+            if (esper.getPredictedClass() == null) {
+                esper.setPredictedClass(ruleClass);
+                esper.setAvgLength(endTime);
+            } else {
+                if (!esper.getPredictedClass().equalsIgnoreCase(esper.getTrueClass()) && ruleClass.equalsIgnoreCase(esper.getTrueClass())) {
                     esper.setPredictedClass(ruleClass);
-                    int i = rule.getSequence().size() - 1;
-                    esper.setAvgLength((int)ebs[0].get(alphabet[i]+".time"));
+                    esper.setAvgLength(endTime);
                 }
             }
 //            Global.writeLog(esper.getMain().getInfoPane(), Color.BLACK, "True Class: " + esper.getTrueClass());

@@ -2,16 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/Raef%20M/Documents/NetBeansProjects/autocep/src/me/autocep/global/Global.java</file>
-            <file>file:/C:/Users/Raef%20M/Documents/NetBeansProjects/autocep/src/me/autocep/esper/queries/RuleQueries.java</file>
-            <file>file:/C:/Users/Raef%20M/Documents/NetBeansProjects/autocep/src/me/autocep/esper/DispatchEvents.java</file>
-            <file>file:/C:/Users/Raef%20M/Documents/NetBeansProjects/autocep/src/me/autocep/gui/CleanUp.java</file>
-            <file>file:/C:/Users/Raef%20M/Documents/NetBeansProjects/autocep/src/me/autocep/esper/Evaluation.java</file>
-            <file>file:/C:/Users/Raef%20M/Documents/NetBeansProjects/autocep/src/me/autocep/gui/MainGUI.java</file>
-            <file>file:/C:/Users/Raef%20M/Documents/NetBeansProjects/autocep/src/me/autocep/input/Input.java</file>
-            <file>file:/C:/Users/Raef%20M/Documents/NetBeansProjects/autocep/src/me/autocep/esper/queries/ShapeletQueries.java</file>
-            <file>file:/C:/Users/Raef%20M/Documents/NetBeansProjects/autocep/src/me/autocep/esper/Esper.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -83,7 +83,7 @@
                       <Component id="jPanel11" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="22" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -261,6 +261,9 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="datasetComboActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -372,8 +375,11 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
+                      <Component id="filesProgressBar" min="-2" pref="195" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
@@ -384,13 +390,14 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="filesProgressBar" min="-2" pref="28" max="-2" attributes="0"/>
+                      </Group>
                       <Component id="jPanel9" alignment="0" max="32767" attributes="0"/>
                       <Component id="jPanel10" alignment="0" max="32767" attributes="0"/>
                   </Group>
@@ -404,7 +411,7 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Select Test Files">
+                <TitledBorder title="Test Files">
                   <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                     <EtchetBorder>
                       <Color PropertyName="highlight" blue="0" green="66" red="0" type="rgb"/>
@@ -419,9 +426,21 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                      <Component id="selectTestBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="46" max="32767" attributes="0"/>
+                      <Component id="abnormalCheckBox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="27" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                              <Component id="streamTestBtn" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="selectTestBtn" min="-2" pref="76" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -430,7 +449,11 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="selectTestBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="abnormalCheckBox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="18" max="32767" attributes="0"/>
+                      <Component id="streamTestBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -442,6 +465,20 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectTestBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="abnormalCheckBox">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Test for abnormality"/>
+                <Property name="toolTipText" type="java.lang.String" value="Show statistics on detecting abnormality"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="streamTestBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Stream"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="streamTestBtnActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -481,7 +518,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="clearFilePane" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPane3" max="32767" attributes="0"/>
+                      <Component id="jScrollPane3" pref="317" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -578,6 +615,8 @@
             </Container>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JProgressBar" name="filesProgressBar">
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel7">
@@ -706,7 +745,7 @@
             <Component class="javax.swing.JTextPane" name="jTextPane1">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
-                <Property name="text" type="java.lang.String" value="This Java software called autoCEP, combined with the python &#xa;project USE &amp; SEE constitute a research effort to form a &#xa;robust approach to learn predictive patterns from multivariate&#xa; time series, and then automatically transform these patterns&#xa; into complex CEP rules.&#xa;First this initiative made it possible to automatically learn CEP&#xa;rules, which was not the case as in the CEP world humans &#xa;are always in charge of this specification.&#xa;Second, it made it simple to use CEP in predictive contexts. &#xa;This task was very complex due to the manual specificaiton&#xa;of rules.&#xa;Third, it paves the way for non-experts in the CEP world to&#xa; make advantage of the CEP technology."/>
+                <Property name="text" type="java.lang.String" value="This Java software called autoCEP, combined with the python &#xa;project USE &amp; SEE constitute a research effort to form a &#xa;robust approach to learn predictive patterns from multivariate&#xa; time series, and then automatically transform these patterns&#xa; into complex CEP rules.&#xa;First this initiative made it possible to automatically learn CEP&#xa;rules, which was not the case as in the CEP world humans &#xa;are always in charge of this specification.&#xa;Second, it made it simple to use CEP in predictive contexts. &#xa;This task was very complex due to the manual specificaiton&#xa;of rules.&#xa;Third, it paves the way for non-experts in the CEP world to&#xa; take advantage of the CEP technology."/>
               </Properties>
             </Component>
           </SubComponents>

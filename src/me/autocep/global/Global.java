@@ -52,7 +52,7 @@ public class Global {
     }
 
     public static void drawLine(JTextPane infoPane, Color BLUE) {
-        writeLog(infoPane, BLUE, "******************************************");
+        writeLog(infoPane, BLUE, "********************************************************************************************");
     }
 
 }

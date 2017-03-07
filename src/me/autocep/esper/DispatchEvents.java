@@ -21,8 +21,6 @@ public class DispatchEvents extends Thread {
     public DispatchEvents(Esper esper) {
         this.esper = esper;
     }
-    
-    
 
     public DispatchEvents(File[] chosenLogs, Esper esper) {
         this.files = chosenLogs;
@@ -40,17 +38,14 @@ public class DispatchEvents extends Thread {
     public void setFiles(File[] files) {
         this.files = files;
     }
-    
 
-    
-    
     @Override
     public void run() {
         try {
-            for (File f : files) {
-                esper.bQ.put(f);
+//            for (File f : files) {
+            esper.bQ.put(files);
 //                Thread.sleep(2000);
-            }
+//            }
         } catch (Exception ex) {
             Logger.getLogger(DispatchEvents.class.getName()).log(Level.SEVERE, null, ex);
         }

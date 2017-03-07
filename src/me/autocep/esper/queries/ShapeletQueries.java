@@ -7,6 +7,7 @@ package me.autocep.esper.queries;
 
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPStatement;
+import com.espertech.esper.client.EventBean;
 import me.autocep.models.Shapelet;
 
 /**
@@ -21,8 +22,16 @@ public class ShapeletQueries {
         String query = "INSERT INTO rule" + index + " "
                 + "SELECT time, "
                 + "prior(" + (l - 1) + ", time) AS t, "
-                + "dim" + id + " AS dim "
-                //                        + "window(*) AS w "
+                + "dim" + id + " AS dim, "
+                + "DistanceMeasures.euclidean("
+                + "window(*)"
+                + ","
+                + "data"
+                + id
+                + ","
+                + "dim"
+                + id
+                + ") AS dis "
                 + "FROM " + stream + ".win:length(" + l + ") "
                 + "HAVING count(*) = " + l + " "
                 + "and "
@@ -37,10 +46,8 @@ public class ShapeletQueries {
                 + ") <= " + s.getDist_threshold();
         EPStatement statement = service.getEPAdministrator().createEPL(query);
 //        statement.addListener((EventBean[] ebs, EventBean[] ebs1) -> {
-//            int time = (Integer) ebs[0].get("t");
-//            System.out.println("time:" + time);
-//            String dim = (String) ebs[0].get("dim");
-//            System.out.println("dim:" + dim);
+//           int endTime = (int) ebs[0].get("t"); 
+//            System.out.println(String.valueOf(endTime));
 //        });
         return query;
 
